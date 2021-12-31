@@ -11,14 +11,39 @@
             v-bind:src="require(`@/assets/${movie.src}`)"
             v-bind:alt="movie.title"
           />
-          <span class="desc">
-            <i class="star"
-              ><b v-bind:style="`width: ${(movie.score / 10) * 100}%`"></b
-            ></i>
-            <em class="score">{{ movie.score }}</em>
-          </span>
+          <template v-if="status === `예매순`">
+            <span class="desc">
+              <em class="score" style="color: red">{{ movie.ticketing }}%</em>
+              <em>예매율</em>
+            </span>
+          </template>
+          <template v-if="status === `개봉일순`">
+            <span class="desc">
+              <em>개봉</em>
+              <em class="score" style="color: red">{{ movie.openDate }}</em>
+            </span>
+          </template>
+          <template v-if="status === `평점순`">
+            <span class="desc">
+              <i class="star"
+                ><b v-bind:style="`width: ${(movie.score / 10) * 100}%`"></b
+              ></i>
+              <em class="score">{{ movie.score }}</em>
+            </span>
+          </template>
+          <template v-if="status === `다운로드순`">
+            <span class="desc">
+              <em class="score" style="color: red">{{ movie.sale }}%</em>
+              <em>판매율</em>
+            </span>
+          </template>
+          <template v-if="status === `주말관객순`">
+            <span class="desc">
+              <em>명</em>
+              <em class="score" style="color: red">{{ movie.week }}</em>
+            </span>
+          </template>
         </a>
-        <p>{{ status }}</p>
       </li>
     </ol>
   </div>
@@ -28,7 +53,7 @@
 export default {
   data() {
     return {
-      status: "에매순",
+      status: "예매순",
     };
   },
   props: ["movieArray", "currentStatus"],
