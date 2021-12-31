@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <ul class="header">
-      <li class="ticket" v-on:click="sortByTicket">예매순</li>
+      <li class="ticket active" v-on:click="sortByTicket">예매순</li>
       <li class="star" v-on:click="sortByStar">평점순</li>
       <li class="start" v-on:click="sortByStart">개봉일순</li>
       <li class="viewer" v-on:click="sortByViewer">주말관객순</li>
@@ -116,7 +116,8 @@ export default {
       ],
     };
   },
-  created() {
+  mounted() {
+    console.log("mounted");
     this.sortByTicket();
   },
   methods: {
@@ -124,26 +125,40 @@ export default {
       const newList = this.movies.sort((a, b) => b.ticketing - a.ticketing);
       this.currentArr = newList;
       this.currentStatus = "예매순";
+      this.setActive("ticket");
     },
     sortByStart() {
       const newList = this.movies.sort((a, b) => b.openDate - a.openDate);
       this.currentArr = newList;
       this.currentStatus = "개봉일순";
+      this.setActive("start");
     },
     sortByViewer() {
       const newList = this.movies.sort((a, b) => b.week - a.week);
       this.currentArr = newList;
       this.currentStatus = "주말관객순";
+      this.setActive("viewer");
     },
     sortByDownload() {
       const newList = this.movies.sort((a, b) => b.sale - a.sale);
       this.currentArr = newList;
       this.currentStatus = "다운로드순";
+      this.setActive("download");
     },
     sortByStar() {
       const newList = this.movies.sort((a, b) => b.score - a.score);
       this.currentArr = newList;
       this.currentStatus = "평점순";
+      this.setActive("star");
+    },
+    setActive(cl) {
+      const active = document.querySelector(".active");
+      if (active) {
+        active.classList.remove("active");
+      }
+
+      const selected = document.querySelector(`.${cl}`);
+      selected.classList.add("active");
     },
   },
 };
@@ -226,7 +241,7 @@ body {
   color: #fff;
 }
 
-.active {
+.header > li.active {
   color: red;
 }
 </style>
